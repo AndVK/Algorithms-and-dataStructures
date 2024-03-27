@@ -27,23 +27,25 @@ const tree = [
   },
 ];
 
-const recursive = (tree) => {
+// Обход в глубину через рекурсию
+const dfsRecursive = (tree) => {
   let sum = 0;
 
   tree.forEach((node) => {
     sum += node.value;
 
-    if (!node.children) return node.value;
+    if (!node.children) return;
 
-    sum += recursive(node.children);
+    sum += dfsRecursive(node.children);
   });
 
   return sum;
 };
 
-console.log(recursive(tree));
+console.log(dfsRecursive(tree)); // 52
 
-const iteration = (tree) => {
+// Обход в глубину через Стек
+const dfsIteration = (tree) => {
   if (!tree.length) {
     return 0;
   }
@@ -66,4 +68,60 @@ const iteration = (tree) => {
   return sum;
 };
 
-console.log(iteration(tree));
+console.log(dfsIteration(tree)); /// 52
+
+// Обход в ширину через рекурсию
+function bfsRecursive(nodes) {
+  let sum = 0;
+
+  const recursive = (nodes) => {
+    if (nodes.length === 0) {
+      return;
+    }
+
+    const nextNodes = [];
+    for (const node of nodes) {
+      sum += node.value;
+
+      if (node.children) {
+        nextNodes.push(...node.children);
+      }
+    }
+
+    recursive(nextNodes);
+  };
+
+  recursive(nodes);
+
+  return sum;
+}
+
+console.log(bfsRecursive(tree));
+
+// Обход в ширину через Стек
+function bfsIteration(tree) {
+  let sum = 0;
+  let stack = [];
+  let childNodes = [];
+
+  if (tree) stack.push(...tree);
+
+  while (stack.length) {
+    const { children, value } = stack.pop();
+
+    sum += value;
+
+    if (children) {
+      childNodes.push(...children);
+    }
+
+    if (!stack.length && childNodes.length) {
+      stack = childNodes;
+      childNodes = [];
+    }
+  }
+
+  return sum;
+}
+
+console.log(bfsIteration(tree)); // 52
