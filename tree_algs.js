@@ -125,3 +125,18 @@ function bfsIteration(tree) {
 }
 
 console.log(bfsIteration(tree)); // 52
+
+// Обход в ширину через Очередь
+function bfsIteration(tree) {
+  const queue = [...tree];
+
+  while (queue.length) {
+    const element = queue.shift();
+
+    console.log(element.value);
+
+    element?.children?.forEach((node) => {
+      queue.push(node);
+    });
+  }
+}
